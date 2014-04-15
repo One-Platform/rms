@@ -1,0 +1,22 @@
+{
+    "total": "2",
+    "rows": [
+        {
+			"id":"1",
+			"cell": [
+				"111111111111",
+				"张三",
+				"<a href='#' class='set' onclick='delRow(this)'>删 除</a>",
+				null
+			]
+        },{
+           "id":"2",
+		   "cell": [
+				"222222222222",
+				"李四",
+				"<a href='#' class='set' onclick='openWindow()'>修 改</a>",
+				null
+			]         
+        }
+    ]
+}

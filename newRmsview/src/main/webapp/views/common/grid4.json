@@ -1,0 +1,26 @@
+{
+    "total": "2",
+    "rows": [
+        {
+			"id":"1",
+			"cell": [
+				"经理用户组",
+				"经理级别",
+				"2012-04-16 ",
+				"2012-05-23",
+				"<a href='#' class='set' onclick='openWindow()'>修 改</a><a href='#' class='set' onclick='delRow(this)'>删 除</a>",
+				null
+			]
+        },{
+           "id":"2",
+		   "cell": [
+				"默认用户组",
+				"暂无描述",
+				"2012-09-17",
+				"2012-09-17",
+				"",
+				null
+			]         
+        }
+    ]
+}

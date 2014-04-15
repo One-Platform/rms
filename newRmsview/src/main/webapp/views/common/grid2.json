@@ -1,0 +1,26 @@
+{
+    "total": "2",
+    "rows": [
+        {
+			"id":"1",
+			"cell": [
+				"管理员角色",
+				"管理员角色",
+				"2012-08-23",
+				"2012-08-30",
+				"<a href='#' class='set' onclick='openWindow()'>修 改</a><a href='#' class='set' onclick='delRow(this)'>删 除</a>",
+				null
+			]
+        },{
+           "id":"2",
+		   "cell": [
+				"管理员角色",
+				"管理员角色",
+				"2012-08-22",
+				"2012-08-31",
+				"<a href='#' class='set' onclick='openWindow()'>修 改</a><a href='#' class='set' onclick='delRow(this)'>删 除</a>",
+				null
+			]         
+        }
+    ]
+}

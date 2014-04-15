@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+body{ font-size:12px; font-family:Arial, Helvetica, sans-serif; padding:0px;}
+ul,li,ol,dl,dt,dd,img,div,p,span{ margin:0; border:0; padding:0; }
+table th{ font-weight:normal;}
+.query{background:#fff;border:#ccc 1px solid;padding:10px;width:559px;border-width:0 1px 1px 0; height:419px; color:#666;}
+.btn_query{width:96px;height:27px;border:none;background:url(../images/system/qr_03.gif) no-repeat;cursor:pointer;}
+.btn_return{background:url(../images/system/btn_bg.gif) no-repeat;width:92px;height:24px;line-height:24px;border:none; color:#fff; cursor:pointer;}
+.txt{ border:1px solid #ccc; width:120px; height:18px; line-height:18px; outline:none;}
+.query_bor{ border-bottom:1px solid #ccc;}
+.query_order{ border-top:1px solid #ccc; border-left:1px solid #ccc; margin-bottom:10px; margin-top:10px;}
+/*.query_order td{ border-bottom:1px solid #ccc; border-right:1px solid #ccc;}*/
+.query_tab{ padding-top:10px; padding-bottom:10px;}
+.btn_del{ background:url(../images/system/qr_02.png) no-repeat center center; background-size:43px 20px; width:43px; height:20px; border:0; cursor:pointer; color:#666;}
+.btn_alter{ background:url(../images/system/qr_03.png) no-repeat center center; background-size:43px 20px; width:43px; height:20px;  border:0; cursor:pointer; color:#fff;}
+.query_link a{ text-decoration:none; color:#3399ca;}
+.query_tab1{ border:1px solid #ccc; border-radius:5px;}
+.query_img{position:relative; top:128px; left:0;}
+.query_title{background:url(../images/system/qr_05.png) no-repeat; background-size:100% 25px; width:100%; height:25px;}
+.query_title th{ border-right:1px solid #ccc;}
+
+.query_box{border:1px solid #ccc; border-radius:5px;}
+
+
+

@@ -1,0 +1,116 @@
+[
+	{ 
+		"attr" : {"id": "id_1"},
+		"data" : "财产保险公司北京分公司", 
+		"children" : [
+			{ 
+				"attr" : {"id": "id_1_1"},
+				"data" : "Only child"
+			},
+			{
+				"attr" : {"id": "id_1_2"},
+				"data" : { 
+						"title" : "Long format demo", 
+						"attr" : { "href" : "#" } 
+				}
+			}
+		], 
+		"state" : "close" 
+	},
+	{ 
+		"attr" : {"id": "id_2"},
+		"data" : "财产保险公司上海分公司", 
+		"children" : [
+			{ 
+				"attr" : {"id": "id_2_1"},
+				"data" : "Only child"
+			},
+			{
+				"attr" : {"id": "id_2_2"},
+				"data" : { 
+						"title" : "Long format demo", 
+						"attr" : { "href" : "#" } 
+				}
+			}
+		], 
+		"state" : "close" 
+	},
+	{ 
+		"attr" : {"id": "id_3"},
+		"data" : "财产保险公司山东分公司", 
+		"children" : [
+			{ 
+				"attr" : {"id": "id_3_1"},
+				"data" : "济南营业厅"
+			},
+			{
+				"attr" : {"id": "id_3_2"},
+				"data" : { 
+						"title" : "青岛营业厅", 
+						"attr" : { "href" : "#" } 
+				}
+			},
+			{ 
+				"attr" : {"id": "id_3_3"},
+				"data" : "威海营业厅"
+			}
+		], 
+		"state" : "close" 
+	},
+	{ 
+		"attr" : {"id": "id_4"},
+		"data" : "财产保险公司天津分公司", 
+		"children" : [
+			{ 
+				"attr" : {"id": "id_4_1"},
+				"data" : "Only child"
+			},
+			{
+				"attr" : {"id": "id_4_2"},
+				"data" : { 
+						"title" : "Long format demo", 
+						"attr" : { "href" : "#" } 
+				}
+			}
+		], 
+		"state" : "close" 
+	},
+	{ 
+		"attr" : {"id": "id_5"},
+		"data" : "财产保险公司黑龙江分公司", 
+		"children" : [
+			{ 
+				"attr" : {"id": "id_5_1"},
+				"data" : "Only child"
+			},
+			{
+				"attr" : {"id": "id_5_2"},
+				"attr" : {"id": "id_one"},
+				"data" : { 
+						"title" : "Long format demo", 
+						"attr" : { "href" : "#" } 
+				}
+			}
+		], 
+		"state" : "close" 
+	},
+	{ 
+		"attr" : {"id": "id_6"},
+		"data" : "财产保险公司河北分公司", 
+		"children" : [
+			{ 
+				"attr" : {"id": "id_6_1"},
+				"data" : "Only child"
+			},
+			{
+				"attr" : {"id": "id_6_2"},
+				"attr" : {"id": "id_one"},
+				"data" : { 
+						"title" : "Long format demo", 
+						"attr" : { "href" : "#" } 
+				}
+			}
+		], 
+		"state" : "close" 
+	}
+]

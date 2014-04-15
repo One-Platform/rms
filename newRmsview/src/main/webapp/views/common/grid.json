@@ -1,0 +1,126 @@
+{
+    "total": "80",
+    "rows": [
+        {
+			"id":"1",
+			"cell": [
+				"11009999",
+				"张山",
+				"山东分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]
+        },{
+           "id":"2",
+		   "cell": [
+				"11009999",
+				"李四",
+				"北京分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' class='set' onclick='openSJ();'>数据设置</a>",
+				null
+			]            
+        },{
+            "id":"3",
+			"cell": [
+				"11009999",
+				"王五",
+				"天津分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]            
+        },{
+           "id":"4",
+		   "cell": [
+				"11009999",
+				"阮奇",
+				"辽宁分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]            
+        },{
+			"id":"5",
+			"cell": [
+				"11009999",
+				"马八",
+				"内蒙古分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' class='set' onclick='openSJ();'>数据设置</a>",
+				null
+			]
+        },{
+			"id":"1",
+			"cell": [
+				"11009999",
+				"关晓怡",
+				"天津分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]
+        },{
+			"id":"1",
+			"cell": [
+				"11009999",
+				"郑天德",
+				"天津分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]
+        },{
+           "id":"2",
+		   "cell": [
+				"11009999",
+				"萧萧",
+				"天津分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]            
+        },{
+            "id":"3",
+			"cell": [
+				"11009999",
+				"吴城",
+				"北京分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]            
+        },{
+           "id":"4",
+		   "cell": [
+				"11009999",
+				"武则天",
+				"天津分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]            
+        },{
+			"id":"5",
+			"cell": [
+				"11009999",
+				"征询",
+				"上海分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]
+        },{
+			"id":"1",
+			"cell": [
+				"11009999",
+				"周海运",
+				"北京分公司",
+				"<a href='#' class='agency' onclick='openWindow()'></a>",
+				"<a href='javascript:;' class='set' onclick='openQX();'>权限设置</a><a href='#' title='该人员未配置权限，无法操作' class='set dis'>数据设置</a>",
+				null
+			]
+        }
+    ]
+}

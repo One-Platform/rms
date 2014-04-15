@@ -1,0 +1,6 @@
+.accord{background:#efefef}
+.accord_title,.accord_select{background:url(../images/accordion/accordion_bg.gif) repeat-x;height:27px;line-height:27px;cursor:pointer;color:#069}
+.accord_select{background:url(../images/system/acc_bg.gif) repeat-x;color:#fff}
+.accord_title span{display:block;width:14px;height:7px;background:url(../images/system/acc_icon.gif) no-repeat;float:left;margin:10px 0 0 80px;}
+.accord_select span{background:url(../images/system/acc_icon2.gif) no-repeat;width:19px;margin:8px 0 0 75px;height:10px;}
+.accord_cont{display:none;overflow:auto}
