@@ -21,6 +21,7 @@ public interface GeRmsUserPowerRepository extends PagingAndSortingRepository<Use
 	@SQL("select userPowerId from GE_RMS_USERPOWER where userCode = ?1 and isValidate = '1'")
 	List<String> findUserPowerIdByUserCode(String userCode);
 		
-	
+	@SQL("delete GE_RMS_USERPOWER where userCode = ?1 and comCode = ?2")
+	void deleteUserPower(String userCode,String comcode);
 	
 }

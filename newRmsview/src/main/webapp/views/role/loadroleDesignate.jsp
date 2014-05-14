@@ -70,9 +70,16 @@ function save(){
 			roleid=roleid+$(this).parents("tr").attr("id").split("_")[1]+",";
 		});
 	var comCode= $("#selectComCode").val();
-	alert(comCode);
-	alert(roleid);
-	msgSuccess("", "保存成功！");
+	$.ajax({
+		url : "${ctx}/role/designateRole/"+comCode+"/"+roleid,
+		type : "post",
+		success : function(data){
+			msgSuccess("", "保存成功！");
+		},
+		error : function(){
+			alert("新增失败！！");
+		}
+	});
 }
 </script>
 </head>
@@ -83,7 +90,7 @@ function save(){
     <td width="269" valign="top">
       <div class="title2"><b>机构列表</b></div>
       <div id="treeOne" class="tree_view"></div>
-      <input id="selectComCode" value=""/>
+      <input type="hidden" id="selectComCode" value=""/>
     </td>
     <td width="30" valign="top">&nbsp;</td>
     <td width="350" valign="top">

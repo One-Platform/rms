@@ -60,7 +60,7 @@ function fitHeight(){
           <tr>
             <td align="right">角色描述：</td>
             <td>
-            	<textarea name="textarea" cols="30" rows="4" style="width:160px;" id="addRoleDes">${des}</textarea>
+            	<textarea name="textarea" cols="30" rows="4" style="width: 184px; height: 220px;" id="addRoleDes">${des}</textarea>
             </td>
           </tr>
       </table>
@@ -68,7 +68,7 @@ function fitHeight(){
     <td width="30" valign="top">&nbsp;</td>
     <td width="269" valign="top">
         <div class="title2"><b>权限列表</b></div>
-        <div id="addTreeTow" class="tree_view"></div>
+        <div id="addTreeTow" class="tree_view" style="height:325px;"></div>
     </td>
   </tr>
 </table>

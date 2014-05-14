@@ -34,7 +34,7 @@
 				});	
 			};
 			
-			accordTitle.first().addClass('accord_select');
+			accordTitle.first().addClass('accord_select accord_hover');
 			accordCont.first().show();
 			
 			accordCont.height(accordContHeight);

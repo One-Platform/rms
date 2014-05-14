@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>权限管理-功能菜单管理</title>
 <link type="text/css" rel="stylesheet" href="../css/sinosoft.base.css" />
-<link type="text/css" rel="stylesheet" href="../css/sinosoft.tree.css" />
+<link type="text/css" rel="stylesheet" href="../css/sinosoft.tree2.css" />
 <link type="text/css" rel="stylesheet" href="../css/sinosoft.message.css" />
 <script type="text/javascript" src="../js/jquery-1.7.1.js"></script>
 <script type="text/javascript" src="../js/sinosoft.tree.js"></script>

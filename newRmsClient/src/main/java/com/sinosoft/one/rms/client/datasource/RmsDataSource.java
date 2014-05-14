@@ -14,13 +14,10 @@ import com.sinosoft.one.rms.client.sqlparser.RmsSQLParser;
 
 public class RmsDataSource implements DataSource {
 	
-	@Autowired
 	private DataSource realDataSource;
 	
-	@Autowired
 	private RmsSQLParser rmsSQLParser;
 	
-	@Autowired
 	private DataRuleFactoryPostProcessor dataRuleFactoryPostProcessor;
 	
 	public RmsDataSource(DataSource dataSource) {

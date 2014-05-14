@@ -40,24 +40,41 @@
 			}
 			
 		});
+		option(userCode);
 	}
 	
 	function selectCom(){
 		var userCode=document.forms[0].userCode.value;
+		var opt;
+		option(userCode)
+	}
+	function getcomCode(){
+		var userCode=document.forms[0].userCode.value;
+		var opt;
+		var obtlength=document.getElementById("comCode").options.length;
+		if(obtlength<=1){
+			option(userCode);
+		}
+	}
+
+	function option(userCode){
+		
 		$.ajax({
 			url : "${ctx}/login/company/"+userCode,
 			type : "post",
-			success : function(com){
-				if(com.comCode != ""){
-					alert(com.comCode);
-					var opt1 = "<option>请选择机构</option>";
-					var opt = opt1+"<option value="+com.comCode+">"+com.comCName+"</option>";
-					$(".inp_selec").html(opt);
-				}
+			success : function(data){
+				 opt = "<option>请选择机构</option>";
+				
+			 	$.each(data, function(i, item) {
+					opt = opt+"<option value="+item.comCode+">"+item.comCName+"</option>";
+				});
+			 	$(".inp_selec").html(opt);  
 			}
-			
 		});
+		
 	}
+
+	
 	function alignTop(){
 		var marginTop = $("#layout_center").height()/2 - 180;
 		$("#login").css('margin-top',marginTop);
@@ -114,7 +131,7 @@
 		        	<tr>
 		        		<td>
 				            <li>机　构 
-				            <select name="comCode"  class="inp_selec" id="comCode">
+				            <select name="comCode"  class="inp_selec" id="comCode" onclick="getcomCode();">
 				            	<option value="">请选择机构</option>
 				            </select>
 				            </li>

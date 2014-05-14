@@ -28,10 +28,16 @@ public interface GeRmsRoleRepository extends PagingAndSortingRepository<Role, St
 	void deleteRoleTask(String roleId,String comCode);
 	
 	@SQL("update ge_rms_role_designate t set  t.comcode=?1 where  t.comcode='*'  and t.roleid =?2")
-	void updateRoleToDefault(String comCode,String roleId);
+	void updateRoleToDefaultds(String comCode,String roleId);
 	
-	@SQL("update ge_rms_role_designate t set t.comcode='*' where (t.comcode=?1 or t.comcode='*' ) and t.roleid =?2")
-	void updateRoleToAll(String comCode,String roleId);
+	@SQL("update GE_RMS_ROLE  t set t.flag='default' where  t.roleid =?1")
+	void updateRoleToDefault(String roleId);
+	
+	@SQL("update ge_rms_role_designate  t set t.comcode='*' where (t.comcode=?1 or t.comcode='*' ) and t.roleid =?2")
+	void updateRoleToAllds(String comCode,String roleId);
+	
+	@SQL("update GE_RMS_ROLE  t set t.flag='all' where  t.roleid =?1")
+	void updateRoleToAll(String roleId);
 	
 	@SQL("delete ge_rms_role_designate t where t.comcode!=?1 and t.roleid =?2")
 	void deleteRoleDesignate(String comCode,String roleId);

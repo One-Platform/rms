@@ -21,4 +21,7 @@ public interface GeRmsRoleDesignateRepository  extends PagingAndSortingRepositor
 	
 	@Query("from RoleDesignate where id.comCode= ?1")
 	List<RoleDesignate> findRoleDesignateByComCodeQuery(String comCode);
+	
+	@SQL("delete ge_rms_role_designate t where (t.roleid in (?2) or  t.comcode in (?1))and t.CREATEUSER !='sys'")
+	void deleteRoleDesignate(List<String> comCodes,List<String> roleIds);
 }

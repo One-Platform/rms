@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import com.sinosoft.one.data.jade.parsers.sqljep.function.In;
 import com.sinosoft.one.rms.model.Company;
 import com.sinosoft.one.rms.model.UserPower;
 import com.sinosoft.one.rms.repositories.CompanyDao;
@@ -23,7 +24,6 @@ public class CompanyService{
 	@Resource(name="geRmsUserPowerRepository")
 	private GeRmsUserPowerRepository geRmsUserPowerRepository;
 
-	//根据Uppercomcode查询出comCode集合
 	public List<Company> findCompanyByUpperComCode(String uppercomcode) {
 		
 		List<Company> company = new ArrayList<Company>();
@@ -77,26 +77,68 @@ public class CompanyService{
 		return (List<Company>) companyDao.findAll();
 	}
 
+	/**
+	 * 获取所有下级子机构
+	 * @param uppercomcode
+	 * @return
+	 */
 	public List<Company> findAllNextComBySupper(String uppercomcode) {
-		List<Company> companies=new ArrayList<Company>();
-		iteratorComapny(companies, uppercomcode);
-		return companies;
+		List<String>resultComCodes=new ArrayList<String>();
+		List<String>uppercomcodes=new ArrayList<String>();
+		uppercomcodes.add(uppercomcode);
+		iteratorGetComCode(resultComCodes, uppercomcodes);
+		return (List<Company>) companyDao.findAll(resultComCodes);
+	}
+	
+	/**
+	 * 获取所有下一级子机构代码
+	 * @param uppercomcode
+	 * @return
+	 */
+	public List<String> findNextComCodeBySupper(List<String>uppercomCodes) {
+		List<String>subComCodes=new ArrayList<String>();
+		if(uppercomCodes.size()>1000){
+			int i;
+			for ( i = 0; i < uppercomCodes.size()/1000; i++) {
+				subComCodes.addAll(companyDao.findComCodeByUppercomcode(uppercomCodes.subList(i*1000, 1000*(i+1))));
+			}
+			subComCodes.addAll(companyDao.findComCodeByUppercomcode(uppercomCodes.subList(1000*(i+1), uppercomCodes.size())));
+		}
+		return subComCodes;
+	}
+//	/**
+//	 * 获取所有下级子机构机构代码
+//	 * @param uppercomcode
+//	 * @return
+//	 */
+//	
+//	public List<String>findAllNextComCodeBySupper(List<String>uppercomCodes) {
+//		List<String>resultComCodes=new ArrayList<String>();
+//		iteratorGetComCode(resultComCodes, uppercomCodes);
+//		return resultComCodes;
+//	}
+	
+	
+	void iteratorGetComCode(List<String>resultComCodes,List<String> uppercomCodes){
+		List<String>subComCodes=new ArrayList<String>();
+		if(uppercomCodes.size()>1000){
+			int i;
+			for ( i = 0; i < uppercomCodes.size()/1000; i++) {
+				subComCodes.addAll(companyDao.findComCodeByUppercomcode(uppercomCodes.subList(i*1000, 1000*(i+1))));
+			}
+			subComCodes.addAll(companyDao.findComCodeByUppercomcode(uppercomCodes.subList(1000*(i+1), uppercomCodes.size())));
+		}else{
+				subComCodes.addAll(companyDao.findComCodeByUppercomcode(uppercomCodes));
+		}
+		if(subComCodes.size()>0){
+			resultComCodes.addAll(subComCodes);
+			iteratorGetComCode(resultComCodes, subComCodes);
+		}
 	}
 
 	
-	void iteratorComapny(List<Company> campanys,String SupercomCode){
-		
-		List<String> comCodes=companyDao.findComCodeByUppercomcode(SupercomCode);
-		if(comCodes.size()>0){
-			List<Company> coms=(List<Company>) companyDao.findAll(comCodes);
-			campanys.addAll(coms);
-			for (String comCode : comCodes) {
-				iteratorComapny(campanys, comCode);
-			}
-		}
-		
-	}
-
+	
+	
 	//根据userCode查询出用户已被引入的机构
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Treeable<NodeEntity> findCompanyByUserCode(String userCode) {

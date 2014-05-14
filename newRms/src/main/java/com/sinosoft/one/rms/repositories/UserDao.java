@@ -28,4 +28,10 @@ public interface UserDao extends PagingAndSortingRepository<Employe, String>{
 	//根据用户ID查询机构ID  
 	@Query(value = "select comcode from GE_RMS_EMPLOYE where userCode = ?1",nativeQuery = true)
 	String findComCodeByUserCode(String userCode);
+	
+	@Query(" from Employe e where e.userCode like ?2 and e.userCode  in(select userCode from UserGroup where group.groupID=?1 )")
+	Page<Employe> findGroupMember(String groupid,String userCode,Pageable pageable);
+	
+	@Query(" from Employe e where e.userCode like ?2 and e.userCode not in(select userCode from UserGroup where group.groupID=?1 )")
+	Page<Employe> finduser(String groupid,String userCode,Pageable pageable);
 }

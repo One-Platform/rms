@@ -1,6 +1,5 @@
 package com.sinosoft.one.rms.service;
 
-import ins.framework.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,7 +31,7 @@ public class GetUserService {
 	@Autowired
 	private EmployeeService employeService;
 	@Autowired
-	private StaffingService staffingService;
+	private UserPowerService staffingService;
 	@Autowired
 	private GroupService groupService;
 	@Autowired
@@ -97,13 +96,14 @@ public class GetUserService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+			int level=0;
 			//创建功能树
-			createList(topList, menulist, tasklist);
+			createList(topList, menulist, tasklist,level);
 			
 			//保存用户的数据规则
 			List<DataPower> dataPowers = new ArrayList<DataPower>();
 			creatDataPowerList(dataPowers,userPower.getBusPowers(),userCode,comCode);
+			
 //			String passWord="";
 //			if(employe.getPassword()!=null&&!employe.getPassword().equals("")){
 //				passWord=employe.getPassword();
@@ -325,12 +325,13 @@ public class GetUserService {
 	 * @param filter
 	 */
 	 void createList(List<Task> list, List<Menu> dest,
-			List<Task> filter) {
+			List<Task> filter ,int menulevel) {
+		menulevel=menulevel+1;
 		for (Iterator<Task> iter = list.iterator(); iter.hasNext();) {
 			Task task = iter.next();
 			if (!filter.contains(task))
 				continue;
-			Menu menu = new Menu(task.getTaskID(), task.getMenuURL(),task.getName());
+			Menu menu = new Menu(task.getTaskID(), task.getMenuURL(),task.getName(),String.valueOf(menulevel));
 			if (!task.getChildren().isEmpty()) {
 				List<Task> newTopTask=new ArrayList<Task>();
 				for (Task filterTask : filter) {
@@ -341,7 +342,7 @@ public class GetUserService {
 				}
 				List<Menu> ls = new ArrayList<Menu>();
 				menu.setChildren(ls);
-				createList(newTopTask, ls, filter);
+				createList(newTopTask, ls, filter,menulevel);
 			}
 			dest.add(menu);
 		}
@@ -349,15 +350,20 @@ public class GetUserService {
 	}
 	
 	 void creatDataPowerList(List<DataPower> dataPowers,List<BusPower>busPowers,String userCode,String comCode){
-		for (BusPower busPower : busPowers) {
-			if(StringUtils.isNotBlank(busPower.getDataRuleParam())&&busPower.getDataRule()!=null){
-				DataPower dataPower=new DataPower(userCode,comCode,busPower.getTask().getTaskID(), busPower.getDataRule().getDataRuleID(), busPower.getDataRuleParam(), busPower.getDataRule().getRule(),busPower.getDataRule().getBusDataInfos());
-				dataPowers.add(dataPower);
-			}else if(busPower.getDataRule()!=null){
-				DataPower dataPower=new DataPower(userCode,comCode,busPower.getTask().getTaskID(),busPower.getDataRule().getDataRuleID(), null, busPower.getDataRule().getRule(),busPower.getDataRule().getBusDataInfos());
-				dataPowers.add(dataPower);
-			}
+		 try {
+				for (BusPower busPower : busPowers) {
+					if(busPower.getDataRuleParam()!=null&&!busPower.getDataRuleParam().equals("")&&busPower.getDataRule()!=null){
+						DataPower dataPower=new DataPower(userCode,comCode,busPower.getTask().getTaskID(), busPower.getDataRule().getDataRuleID(), busPower.getDataRuleParam(), busPower.getDataRule().getRule(),busPower.getDataRule().getBusDataInfos());
+						dataPowers.add(dataPower);
+					}else if(busPower.getDataRule()!=null){
+						DataPower dataPower=new DataPower(userCode,comCode,busPower.getTask().getTaskID(),busPower.getDataRule().getDataRuleID(), null, busPower.getDataRule().getRule(),busPower.getDataRule().getBusDataInfos());
+						dataPowers.add(dataPower);
+					}
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	
 	}
 
 

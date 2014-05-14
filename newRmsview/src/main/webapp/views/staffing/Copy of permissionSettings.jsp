@@ -24,9 +24,7 @@ var temTreeId = "";
 var temFlag = true;//该变量用来最下边的初始化的。
 var comCode = "";
 var groupId = "";
-var groupIdStr = "";
 var groupName = "";
-var groupNameStr = "";
 var roleId = "";
 var roleIdStr = ",";
 $(function(){
@@ -46,7 +44,7 @@ $(function(){
 		},
 		"plugins":["themes","json_data","ui"]
 	}).bind("close_node.jstree", function(e, data) {
-		var theId = $(this).find(".jstree-open");
+		
 		var thisId = data.rslt.obj.attr("id");
 		if(thisId == temTreeId) {
 			$(".setup_box").hide();
@@ -54,41 +52,30 @@ $(function(){
 			$(".set_info").hide();
 		}
 	}).bind("select_node.jstree", function(e, data){
-		var n = 0;
-		var temVal = "";
 		comCode = data.rslt.obj.attr("id");
 		comCName = data.rslt.obj.find("a").eq(0).text();
 		$(".set_info").attr("id" , comCode);
 		$(".set_info").find("span").text(comCName);
+		var temVal = "";
 		$.ajax({
 			url : "${ctx}/staffing/checkCom/"+comCode+"/${userCode}",
-			type : "get",
-			success : function(data){
+			success: function(data){
 				if(data == "no"){
 					$.ajax({
 						url : "${ctx}/staffing/group/"+comCode,
 						type : "get",
 						success : function(data){
 							for(var i=0;i<data.length;i++){
-								if(data[i].flag == "1"){
-									if(n == 0){
-										temVal = temVal + "<li onclick='ajaxMethodOne(this);' id='"+data[i].groupID+"' class = 'select'><a href='javascript:;'><span onclick='addSelect(this,event);' class = 'select'></span>"+data[i].name+"</a></li>";
-										n++;
-									}else{
-										groupIdStr = groupIdStr + data[i].groupID +",";
-										groupNameStr = groupNameStr + data[i].name +",";
-										temVal = temVal + "<li onclick='ajaxMethodOne(this);' id='"+data[i].groupID+"'><a href='javascript:;'><span onclick='addSelect(this,event);' class = 'select'></span>"+data[i].name+"</a></li>";
-									}
-								}else{
-									temVal = temVal + "<li onclick='ajaxMethodOne(this);' id='"+data[i].groupID+"'><a href='javascript:;'><span onclick='addSelect(this,event);'></span>"+data[i].name+"</a></li>";
-								}
+								temVal = temVal + "<li onclick='ajaxMethodOne(this);' id='"+data[i].groupID+"'><a href='javascript:;'><span onclick='addSelect(this,event);'></span>"+data[i].name+"</a></li>";
 							};
-							
-							$First = $(temVal).find(".select").eq(0).parents("li");
-							groupId = $First.attr("id");
-							groupName = $First.text();
 					        $(".setup_box").eq(0).children("ul").html(temVal);
 							$(".setup_box").eq(0).show();
+							$(".setup_box").eq(1).children("ul").children().remove();
+							$(".setup_box").eq(1).hide();
+							$(".setup_box").eq(2).children("ul").children().remove();
+							$(".setup_box").eq(2).hide();
+							$(".clear").hide(); 
+							$(".set_info").hide();
 						},
 						error : function(){
 							alert("操作失败！");
@@ -102,14 +89,26 @@ $(function(){
 					$(".set_info").hide();
 				}
 			},
-			error : function(){
-				alert("操作失败！");
+			error: function(){
+				alert("操作失败！！");
 			}
-
 		});
 	});
 	
 	fitHeight();
+	$("#treeTow").jstree({ 
+		"themes" : {
+			"theme" : "default",
+			"dots" : false,
+			"icons" : false
+		},
+		"json_data":{
+			"ajax":{
+				"url":"${ctx}/views/common/tree.json"
+			}
+		},
+		"plugins":["themes","json_data","ui"]
+	});
 	$(".tolge_show").bind("click", toggleDiv);
 	
 });
@@ -173,6 +172,7 @@ function addSelect(obj,event) {
 							roleIdStr = roleIdStr + data[i].roleID + ",";
 							temVal = temVal + "<li onclick='addSelect(this); ajaxMethodTwo(this);' id='"+data[i].roleID+"'><a href='javascript:;'>"+data[i].name+"</a></li>";
 						};
+					alert(temVal);
 					$div = $("<div id='"+liId+"Role"+"'></div>");
 					$div.html(temVal);
 					$childObj = $("#hidden").find("div[id='"+liId+"Role']");
@@ -247,7 +247,6 @@ function addThreeSelect(thisLi) {
 	}
 }
 function ajaxMethodOne(thisLi) {
-	alert("ccc")
 	groupId = thisLi.id;
 	groupName = $(thisLi).find("a").text();
 	$(thisLi).addClass("select");
@@ -256,6 +255,7 @@ function ajaxMethodOne(thisLi) {
 			$(this).removeClass("select");
 		}
 	});
+	alert(thisLi.id);
 	if($(thisLi).hasClass("select")) {
 		$.ajax({
 			url : "${ctx}/staffing/roleList/"+thisLi.id+"/"+comCode,
@@ -284,10 +284,11 @@ function ajaxMethodOne(thisLi) {
 				if($(".setup_box").eq(2).children("ul").html() != ""){
 					$(".setup_box").eq(2).children("ul").html("");
 				}
+				alert(roleIdStr);
 				if(roleIdStr != ""){
-					taskList_2(comCode,roleIdStr);
+					showTask_2(comCode,roleIdStr);
 				}else{
-					alert("无角色！");
+					alert("此用户组无角色！");
 				}
 			},
 			error : function(){
@@ -296,6 +297,7 @@ function ajaxMethodOne(thisLi) {
 
 		});
 	} else {
+		
 		$(thisLi).siblings().each(function(){
 			if($(this).hasClass("select") && $(this).find("span").hasClass("select")) {
 				$(".setup_box").eq(1).hide();
@@ -308,8 +310,7 @@ function ajaxMethodOne(thisLi) {
 	}
 }
 
-function taskList_2(comCode,roleIdStr){
-
+function showTask_2(comCode,roleIdStr){
 	$.ajax({
 		url : "${ctx}/staffing/taskList/"+comCode+"/"+roleIdStr,
 		type : "get",
@@ -335,7 +336,6 @@ function taskList_2(comCode,roleIdStr){
 
 	});	
 }
-
 
 function ajaxMethodThree(thisLi) {
 	

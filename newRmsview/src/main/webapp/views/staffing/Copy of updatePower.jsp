@@ -33,6 +33,7 @@ $(function(){
 	$(".setup_box").hide();
 	$(".clear").hide(); 
 	$(".set_info").hide();
+			
 	$("#treeOne").jstree({ 
 		"themes" : {
 			"dots" : false,
@@ -84,7 +85,12 @@ $(function(){
 				groupName = $First.text();
 		        $(".setup_box").eq(0).children("ul").html(temVal);
 				$(".setup_box").eq(0).show();
-				showRoles(groupId,comCode);	
+				if(groupId != null){
+					showRoles(groupId,comCode);	
+				}else{
+					alert("无已被引入用户组！");
+				}
+				
 			},
 			error : function(){
 				alert("操作失败！");
@@ -94,6 +100,19 @@ $(function(){
 	});
 	
 	fitHeight();
+	/* $("#treeTow").jstree({ 
+		"themes" : {
+			"dots" : false,
+			//"icons" : false
+			"theme" : "default"
+		},
+		"json_data":{
+			"ajax":{
+				"url":"${ctx}/views/common/tree.json"
+			}
+		},
+		"plugins":["themes","json_data","ui"]
+	}); */
 	$(".tolge_show").bind("click", toggleDiv);
 	
 });
@@ -106,6 +125,7 @@ function showRoles(id,comCode){
 			roleIdStr="";
 			var temVal = "";
 			if(data != null)
+				
 				for(var i=0;i<data.length;i++){
 					roleIdStr = roleIdStr + data[i].roleID + ",";
 					temVal = temVal + "<li onclick='addSelect(this); ajaxMethodTwo(this);' id='"+data[i].roleID+"'><a href='javascript:;'>"+data[i].name+"</a></li>";
@@ -126,12 +146,8 @@ function showRoles(id,comCode){
 			if($(".setup_box").eq(2).children("ul").html() != ""){
 				$(".setup_box").eq(2).children("ul").html("");
 			}
-			if(roleIdStr != ""){
-				showGroupBox(comCode,roleIdStr);
-			}else{
-				alert("无角色！");
-			}
-			
+			alert(roleIdStr);
+			showGroupBox(comCode,roleIdStr);
 
 		},
 		error : function(){
@@ -193,6 +209,7 @@ function showGroupBox(comCode,roleIdStr){
 			$(".set_info").show();	
 		},
 		error : function(){
+			alert(5);
 			alert("操作失败！！");
 		}
 
@@ -251,11 +268,13 @@ function otherGroupBox(groupId,comCode){
 					});
 				},
 				error : function(){
+					alert(1);
 					alert("操作失败！！");
 				}
 			});
 		},
 		error : function(){
+			alert(4);
 			alert("操作失败！！");
 		}
 
@@ -323,7 +342,7 @@ function addSelect(obj,event) {
 }
 
 function roleList(liId,comCode){
-	alert("xxx");
+	
 	$.ajax({
 		url : "${ctx}/staffing/roleList/"+liId+"/"+comCode,
 		type : "get",
@@ -372,12 +391,14 @@ function roleList(liId,comCode){
 					$(".set_info").show();	
 				},
 				error : function(){
+					alert(3);
 					alert("操作失败！！");
 				}
 
 			});	
 		},
 		error : function(){
+			alert(2);
 			alert("操作失败！！");
 		}
 	});
@@ -391,7 +412,7 @@ function addThreeSelect(thisLi) {
 	}
 }
 function ajaxMethodOne(thisLi) {
-	alert("ccc")
+	alert(123);
 	groupId = thisLi.id;
 	groupName = $(thisLi).find("a").text();
 	$(thisLi).addClass("select");
@@ -440,6 +461,7 @@ function ajaxMethodOne(thisLi) {
 
 		});
 	} else {
+		var tem = 0;
 		$(thisLi).siblings().each(function(){
 			if($(this).hasClass("select") && $(this).find("span").hasClass("select")) {
 				$(".setup_box").eq(1).hide();

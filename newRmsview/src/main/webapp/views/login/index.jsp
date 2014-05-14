@@ -98,7 +98,7 @@ function changePass(e){
 		type : "post",
 	     success: function(data){
 	    	 doforList(data);
-	    	$("#leftMenu").html(li);
+	     	$("#leftMenu").html(li);
 	    	$('#leftMenu').accordion({collapsible:true});
 	    	$("#nav").find("a").bind("click",dMenu);
 	    } 
@@ -108,7 +108,7 @@ function changePass(e){
 
 	function doforList(data) {
 		$.each(data, function(i, item) {
-			if (typeof (item.url) == "undefined") {
+			if (item.menuLevel == "1") {
 				li = li + "<h3 class='accord_title accord_select'><b class='ac_name'>" + item.name + "</b></h3>"
 				li= li+"<div>";
 				li = li +"<ul class='nav' id='nav'>";
@@ -119,7 +119,7 @@ function changePass(e){
 			
 			if (typeof (item.children) != "undefined") {
 				
-				if (typeof (item.url) == "undefined") {
+				if (item.menuLevel == "1") {
 					doforList(item.children)
 				}else{
 					li = li + "<ul>"
@@ -128,10 +128,10 @@ function changePass(e){
 				}
 			}
 
-			if (typeof (item.url) == "undefined") {
-				li = li + "</ul> </div>"
+			if (item.menuLevel == "1")  {
+				li = li + "</ul> </div>";
 			}else{
-				li = li + "</li>"
+				li = li + "</li>";
 			}
 		
 		});
@@ -161,7 +161,7 @@ function changePass(e){
         </a>
         <!--左栏菜单-->
         <div id="leftMenu">
-         	<h3><b class="ac_name">权限管理</b></h3>  
+         	<%-- <h3><b class="ac_name">权限管理</b></h3>  
               <div>
             	<ul class="nav" id="nav">
                 	<li><a href="${ctx}/views/taskmenu/loadTask.jsp"><span>功能菜单管理</span></a></li>
@@ -174,7 +174,8 @@ function changePass(e){
                     <li><a href="${ctx}/views/group/loadGroup.jsp"><span>用户组管理</span></a></li>
                     <li><a href="${ctx}/views/staffing/loadEmployeesConfig.jsp"><span>人员配置</span></a></li>
                 </ul>
-            </div>  
+            </div>   --%>
+            
         </div>
 	</div>
 </div>

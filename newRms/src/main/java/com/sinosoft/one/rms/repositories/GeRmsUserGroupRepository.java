@@ -18,4 +18,6 @@ public interface GeRmsUserGroupRepository extends PagingAndSortingRepository<Use
 	@SQL("delete from GE_RMS_USERGROUP where userGropuId in (?1)")
 	void deleteUserPower(List<String> userGropuIds);
 	
+	@SQL("delete from GE_RMS_USERGROUP where groupid = ?1 and userCode= ?2 and USERPOWERID= (select USERPOWERID from GE_RMS_USERPOWER where userCode= ?2 and comCode= ?3)")
+	void deleteGroupMember(String groupid ,String userCode,String comCode);
 }

@@ -1,99 +1,99 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-        <groupId>com.sinosoft.one</groupId>
-        <artifactId>parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>newRmsview</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <properties>   
-        <!-- oracle driver configuration -->
-        <jdbc.driver.groupId>oracle</jdbc.driver.groupId>
-        <jdbc.driver.artifactId>ojdbc</jdbc.driver.artifactId>
-        <jdbc.driver.version>5</jdbc.driver.version>
-        <!-- mysql driver configuration -->
-        <!--<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
-        <jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
-        <jdbc.driver.version>5.1.20</jdbc.driver.version>-->
-    </properties>
-  <dependencies>
-	<dependency>  
-		<groupId>com.sinosoft.one</groupId>  
-		<artifactId>mvc</artifactId>  
-		<version>1.0.0-SNAPSHOT</version>  
-	</dependency>
-	<dependency>  
-		<groupId>com.sinosoft.one</groupId>  
-		<artifactId>mvc-ui-plugin</artifactId>  
-		<version>1.0.0-SNAPSHOT</version>  
-		<exclusions>
-			<exclusion>
-				<groupId>com.sinosoft.one</groupId>
-				<artifactId>util</artifactId>
-			</exclusion>
-		</exclusions>
-		
-	</dependency>
-	<dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.sinosoft.one</groupId>
+		<artifactId>parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>newRmsview</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<properties>
+		<!-- oracle driver configuration -->
+		<jdbc.driver.groupId>oracle</jdbc.driver.groupId>
+		<jdbc.driver.artifactId>ojdbc</jdbc.driver.artifactId>
+		<jdbc.driver.version>5</jdbc.driver.version>
+		<!-- mysql driver configuration -->
+		<!--<jdbc.driver.groupId>mysql</jdbc.driver.groupId> <jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId> 
+			<jdbc.driver.version>5.1.20</jdbc.driver.version> -->
+	</properties>
+	<dependencies>
+		<dependency>
 			<groupId>com.sinosoft.one</groupId>
-			<artifactId>util</artifactId> 
+			<artifactId>mvc</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sinosoft.one</groupId>
+			<artifactId>mvc-ui-plugin</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sinosoft.one</groupId>
+					<artifactId>util</artifactId>
+				</exclusion>
+			</exclusions>
+
+		</dependency>
+		<dependency>
+			<groupId>com.sinosoft.one</groupId>
+			<artifactId>util</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.sinosoft</groupId>
 			<artifactId>arch4</artifactId>
-            <scope>provided</scope>
+			<scope>provided</scope>
 		</dependency>
-	<dependency>
-        <groupId>com.sinosoft.one</groupId>
-        <artifactId>data</artifactId>
-    	<version>1.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>  
-        <groupId>com.sinosoft.one</groupId>  
-        <artifactId>data</artifactId>  
-        <version>1.0.0-SNAPSHOT</version>  
-    </dependency>
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-	</dependency>
-	<dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>jsp-api</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-    </dependency>
-    <dependency>
-		<groupId>oracle</groupId>
-		<artifactId>ojdbc</artifactId>
-	</dependency>
-	<dependency>
-	    <groupId>org.hibernate</groupId>
-	    <artifactId>hibernate-ehcache</artifactId>
-    </dependency>
-    <dependency>
-	    <groupId>com.alibaba</groupId>
-	    <artifactId>fastjson</artifactId>
-    </dependency>
-    
-    <dependency>
-    	<groupId>com.sinosoft.one</groupId>
-	  	<artifactId>newRmsClient</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>  
-    </dependency>
-    <dependency>
-    	<groupId>com.sinosoft.one</groupId>
-	  	<artifactId>newRms</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    
-    <!-- security begin -->
+		<dependency>
+			<groupId>com.sinosoft.one</groupId>
+			<artifactId>data</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sinosoft.one</groupId>
+			<artifactId>data</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>ojdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sinosoft.one</groupId>
+			<artifactId>newRmsClient</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sinosoft.one</groupId>
+			<artifactId>newRms</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- security begin -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
@@ -111,11 +111,11 @@
 			<artifactId>shiro-ehcache</artifactId>
 		</dependency>
 		<!-- security end -->
-    
-  </dependencies>
-  
-  <build>
-       <plugins>
+
+	</dependencies>
+
+	<build>
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -124,20 +124,20 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>tomcat-maven-plugin</artifactId>
-				<configuration>
-					<uriEncoding>UTF-8</uriEncoding>
-					<path>/newRmsview</path>
-                    <port>8080</port>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
 			</plugin>
+			<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>tomcat-maven-plugin</artifactId>
+					<configuration>
+						<uriEncoding>UTF-8</uriEncoding>
+						<path>/newRmsview</path>
+						<port>8080</port>
+					</configuration>
+				</plugin>
 		</plugins>
-    </build>
-  
+	</build>
+
 </project>

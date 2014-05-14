@@ -50,11 +50,13 @@ function fitHeight(){
       <tr>
         <td align="right">用户组名称：</td>
         <td><input type="text" style="width:160px;" id="addGroupName"/></td>
-        <td>类型：</td>
-        <td><select name="select2" id="addGroupType">
+       <!--  <td>类型：</td>
+        <td>
+         <select name="select2"  id="addGroupType">
           <option>默认类型</option>
           <option>所有可见类型</option>
-          </select></td>
+          </select>  
+          </td> -->
       </tr>
       <tr>
         <td align="right">用户组描述：</td>

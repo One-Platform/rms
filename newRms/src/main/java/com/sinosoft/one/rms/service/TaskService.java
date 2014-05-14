@@ -75,9 +75,11 @@ public class TaskService {
 		Task taskCheck = geRmsTaskRepository.findOne(task.getTaskID());
 		
 		task.setSysFlag("RMS");
-		Task parentTask = geRmsTaskRepository.findOne(parentId);
-		task.setParent(parentTask);
-		
+		if(parentId!=null&&!parentId.toString().equals("".toString())){
+			Task parentTask = geRmsTaskRepository.findOne(parentId);
+			task.setParent(parentTask);
+		}
+	
 		//保存Task对象
 		geRmsTaskRepository.save(task);
 		
@@ -166,7 +168,45 @@ public class TaskService {
 			}
 		return resultTask;
 	}
-
+	
+	/**
+	 * 查询除外权限
+	 */
+	public List<Task> getexcpowerTask(String userCode,String comCode){
+		List<Task> excPowerTasks=new ArrayList<Task>();
+		String userPowerId = geRmsUserPowerRepository.findIdByUserCodeComCode(userCode, comCode);
+		if(userPowerId!=null){
+			UserPower userPower = geRmsUserPowerRepository.findOne(userPowerId);
+			List<ExcPower> excPowers = userPower.getExcPowers();
+			for(ExcPower excPower : excPowers){
+				excPowerTasks.add(excPower.getTask());
+			}
+		}
+		return excPowerTasks;
+	}
+	
+	/**
+	 * 查询某个权限下的所有子权限
+	 */
+	public List<Task> findSubTasks(String taskid){
+		List<Task> tasks=new ArrayList<Task>();
+		Task task =geRmsTaskRepository.findOne(taskid);
+		tasks.add(task);
+		getSubTasks(tasks, task.getChildren());
+		return tasks;
+	}
+	
+	void getSubTasks(List<Task>result,List<Task>tasks){
+		for (Task task : tasks) {
+			result.add(task);
+			if(task.getChildren().size()>0){
+				getSubTasks(result, task.getChildren());
+			}
+		}
+		
+	}
+	
+//-----------------------------------------------------------------------//	
 	/**
 	 * 构建功能树 topTasks父节点 filter所有节点
 	 */
@@ -221,7 +261,7 @@ public class TaskService {
 			String taskId) {
 		
 		//查询当前机构的角色的当前根权限的后代权限(集合)
-		List<Task> tasks = taskChildren(roleIdStr, comCode, taskId);
+		List<Task> tasks = getTaskChildren(roleIdStr, comCode, taskId);
 		
 		List<Task> topTasks = new ArrayList<Task>();
 		Map<String,Task> filter = new HashMap<String, Task>();
@@ -236,9 +276,8 @@ public class TaskService {
 		Treeable<NodeEntity> treeable = creatTaskTreeAble(topTasks, filter);
 		return treeable;
 	}
-	
-	//查询当前机构的角色的当前根权限的后代权限(集合)
-	public List<Task> taskChildren(String roleIdStr, String comCode,
+	//查询当前机构下某个角色的根权限，以及它所有具有的后代权限(集合)
+	public  List<Task> getTaskChildren(String roleIdStr, String comCode,
 			String taskId){
 		String[] roleIds = roleIdStr.split(",");
 		List<String> roleids = new ArrayList<String>();
@@ -251,9 +290,7 @@ public class TaskService {
 		List<Task> tasks = getTasks(roletaskids,comCode);
 		return tasks;
 	}
-	
-	
-	public List<Task> getTasks(List<String> roletaskids,String comCode){
+	 List<Task> getTasks(List<String> roletaskids,String comCode){
 		List<String>comtaskids = geRmsTaskAuthRepository.findAllTaskIdByComCode(comCode);
 		
 		List<String> resultid = new ArrayList<String>();
@@ -299,7 +336,7 @@ public class TaskService {
 			String userCode, String taskId) {
 		
 		//查询当前机构的角色的当前根权限的后代权限(集合)
-		List<Task> tasks = taskChildren(roleIdStr, comCode, taskId);
+		List<Task> tasks = getTaskChildren(roleIdStr, comCode, taskId);
 		
 		//检查权限在权限除外表中是否存在
 		checkTask (userCode,comCode,tasks);
@@ -342,6 +379,7 @@ public class TaskService {
 		return geRmsTaskRepository.findTaskByTaskIds(taskIds, sysFlag);
 	}
 	
+
 	
 
 }

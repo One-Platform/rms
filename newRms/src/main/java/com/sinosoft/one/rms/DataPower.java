@@ -1,6 +1,5 @@
 package com.sinosoft.one.rms;
 
-import ins.framework.utils.StringUtils;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class DataPower  {
 		this.comCode=comCode;
 		this.taskId=taskId;
 		this.ruleId=ruleId;
-		if(StringUtils.isNotBlank(param))
+		if(param!=null&&!"".equals(param))
 			this.param=param;
 		else
 			this.param=null;

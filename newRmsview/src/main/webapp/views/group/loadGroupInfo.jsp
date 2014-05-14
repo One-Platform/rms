@@ -15,31 +15,31 @@
 <script language="javascript" src="${ctx}/js/sinosoft.grid.js"></script>
 <script type="text/javascript" src="${ctx}/js/sinosoft.mouseoutclick.js"></script>
 <script type="text/javascript">
-$(function(){
-	fitHeight();
-	$("#updataGrid").Grid({
-		type:"post",
-		url : "${ctx}/group/findRoleByGroupId/"+"${groupId}",
-		dataType: "json",
-		height: 220,
-		colums:[
-			{id:'1',text:'角色名称',name:"appellation",index:'1',align:'',color:''},
-			{id:'2',text:'角色编号',name:"Status",index:'1',align:'',color:''},
-			{id:'3',text:'创建日期',name:"Version",index:'1',align:'',color:''},
-			{id:'4',text:'修改日期',name:"degrees",index:'1',align:'',color:''}
-		],
-		rowNum:500,
-		sorts:false,
-		pager : false,
-		number:false,
-		multiselect: true
-	});	
-});
-function fitHeight(){
-	var pageHeight = $(document).height() - 102;
-	$("#treeOne").height(pageHeight);
-	$("#treeTow").height(pageHeight);
-};
+	$(function(){
+		fitHeight();
+		$("#updataGrid").Grid({
+			type:"post",
+			url : "${ctx}/group/findRoleByGroupId/"+"${groupId}",
+			dataType: "json",
+			height: 220,
+			colums:[
+				{id:'1',text:'角色名称',name:"appellation",width:'130',index:'1',align:'',color:''},
+				{id:'2',text:'描述',name:"Status",width:'170',index:'1',align:'',color:''},
+				{id:'3',text:'创建日期',name:"Version",width:'125',index:'1',align:'',color:''},
+				{id:'4',text:'修改日期',name:"degrees",width:'125',index:'1',align:'',color:''}
+			],
+			rowNum:500,
+			sorts:false,
+			pager : false,
+			number:false,
+			multiselect: true
+		});	 
+	});
+	function fitHeight(){
+		var pageHeight = $(document).height() - 102;
+		$("#treeOne").height(pageHeight);
+		$("#treeTow").height(pageHeight);
+	};
 </script>
 </head>
 
@@ -50,9 +50,9 @@ function fitHeight(){
       <tr>
         <td align="right">用户组名称：</td>
         <td><input type="text" style="width:160px;" id="updataGroupName" value="${name}"/>
-        	<input type="text" style="width:160px;" id="updataGroupId" value="${groupId}"/>
+        	<input type="hidden" style="width:160px;" id="updataGroupId" value="${groupId}"/>
         </td>
-        <td>类型：</td>
+        <%-- <td>类型：</td>
         <td>
         	<select name="select" id="updateGroupType">
            	 		<c:if test="${flag eq 'all'}" >
@@ -64,7 +64,7 @@ function fitHeight(){
                			<option value="all" >所有可见</option>
                		</c:if>     
                 </select>
-                </td>
+                </td> --%>
       </tr>
       <tr>
         <td align="right">用户组描述：</td>
@@ -74,9 +74,10 @@ function fitHeight(){
   </tr>
   <tr>
     <td colspan="3" valign="top">
-    	<div id="updataGrid"></div>
+    	
     </td>
   </tr>
 </table>
+<div id="updataGrid"></div>
 </body>
 </html>

@@ -75,7 +75,13 @@
 			<property name="minEvictableIdleTimeMillis" value="3600000" />
 		</bean>
 
-
+		<!-- 数据权限数据源配置 用于数据权限SQL注入的代理源 
+	<bean id="realDataSource" class="com.sinosoft.one.rms.client.datasource.RmsDataSource">
+    	<property name="rmsSQLParser" ref="rmsSQLParser"></property>
+    	<property name="dataRuleFactoryPostProcessor" ref="dataRuleFactory"></property>
+		<constructor-arg ref="dataSource" />
+    </bean>
+	-->
 		<!-- 数据源配置,使用应用服务器的数据库连接池 -->
 		<!--<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ExampleDB" />-->
 
@@ -83,5 +89,64 @@
          <!--<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
              <constructor-arg ref="dataSourceSpied"/>
          </bean>-->
+	
+	
+	<!-- myfilter -->
+	<bean id="loginFilter" class="com.sinosoft.one.rms.client.shiro.LoginFilter"></bean>
+	<bean id="simpleFilter" class="com.sinosoft.one.rms.client.shiro.SimpleFilter"></bean>
+	
+	<!-- 基于Form表单的身份验证过滤器 -->
+	<!-- <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+	    <property name="usernameParam" value="userCode"/>
+	    <property name="passwordParam" value="passWord"/>
+	</bean> -->
+	
+	<!-- Shiro Filter -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
+    	<property name="securityManager" ref="securityManager"/>
+		<property name="loginUrl" value="/login.jsp"/>
+		<property name="successUrl" value="/login"/>
+		<property name="filters">
+			<map>
+				<entry key="loginFilter" value-ref="loginFilter"/>
+				<!-- <entry key="simpleFilter" value-ref="simpleFilter"/> -->
+				<!-- <entry key="authc" value-ref="formAuthenticationFilter"/> -->
+        	</map>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+				/ =anon
+				/login/company/** =anon
+				/login/checkUser** = anon
+				/login/logout = anon
+				/js/** = anon
+				/css/** = anon
+				/images/** = anon
+				 
+		 		/** = loginFilter 
+		 		<!-- /** = simpleFilter-->
+		 		<!-- /** = authc -->
+		 	</value>
+		</property>
+	</bean>
+	
+	
+	<!-- Shiro's main business-tier object for web-enabled applications -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- <property name="realm" ref="ShiroDbSimpleRealm" /> -->
+		<property name="realm" ref="shiroDbRealm" />
+		<property name="cacheManager" ref="cacheManager"></property>
+	</bean>
 
+<!-- 	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.Md5CredentialsMatcher"></bean>
+ -->
+	<!-- 用户授权信息Cache -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"/>
+	</bean>
 </beans>

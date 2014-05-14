@@ -14,8 +14,13 @@ public interface CompanyDao extends PagingAndSortingRepository<Company, String>{
 	@SQL("select comCode from GE_RMS_COMPANY where Uppercomcode = ?1")
 	List<String> findComCodeByUppercomcode(String Uppercomcode);
 	
-	//查询出全部机构的ID
-	@SQL("select comCode from GE_RMS_COMPANY")
-	List<String> findComCodeAll();
+	@SQL("select comCode from GE_RMS_COMPANY where Uppercomcode in(?1)")
+	List<String>findComCodeByUppercomcode(List<String> upperComCode);
+	
+//	//查询出全部机构的ID
+//	@SQL("select comCode from GE_RMS_COMPANY")
+////	List<String> findComCodeAll();
 
+	@SQL("select * from GE_RMS_COMPANY where comCode in (select comCode from GE_RMS_USERPOWER where usercode= ?1 and isValidate='1')and VALIDSTATUS = '1'")
+	List<Company> findPowerCompanyByuserCode(String userCode);
 }

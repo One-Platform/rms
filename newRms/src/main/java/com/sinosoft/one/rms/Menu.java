@@ -13,18 +13,21 @@ public class Menu {
 	
 	private  String name;
 	
+	private String menuLevel;
+	
 	private List<Menu> children;
 	
 	public Menu(){
 		
 	}
 	
-	public Menu(final String id,final String url,final String name){
+	public Menu(final String id,final String url,final String name,final String menuLevel){
 		Assert.hasText(id);
 		Assert.hasText(name);
 		this.url=url;
 		this.id=id;
 		this.name=name;
+		this.menuLevel=menuLevel;
 	}
 
 	public void setChildren(final List<Menu> children) {
@@ -64,6 +67,14 @@ public class Menu {
 		if(this.name ==null){
 			this.name = name;
 		}
+	}
+
+	public String getMenuLevel() {
+		return menuLevel;
+	}
+
+	public void setMenuLevel(String menuLevel) {
+		this.menuLevel = menuLevel;
 	}
 	
 	

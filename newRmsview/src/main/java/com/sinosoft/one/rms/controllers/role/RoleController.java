@@ -17,9 +17,10 @@ import com.sinosoft.one.mvc.web.annotation.Path;
 import com.sinosoft.one.mvc.web.annotation.rest.Get;
 import com.sinosoft.one.mvc.web.annotation.rest.Post;
 import com.sinosoft.one.mvc.web.instruction.reply.Reply;
+import com.sinosoft.one.mvc.web.instruction.reply.Replys;
 import com.sinosoft.one.rms.User;
+import com.sinosoft.one.rms.client.ShiroLoginUser;
 import com.sinosoft.one.rms.model.Company;
-import com.sinosoft.one.rms.model.Employe;
 import com.sinosoft.one.rms.model.Role;
 import com.sinosoft.one.rms.model.RoleDesignateInfo;
 import com.sinosoft.one.rms.model.Task;
@@ -54,10 +55,12 @@ public class RoleController {
 		//查询机构下所有可见的角色
 		List<String> roleAttribute = new ArrayList<String>();
 		page = roleService.findRole(comCode,name,pageable);
-		String button = "<a href='#' class='set' onclick='openUpdateWindow(this);'>修 改</a><a href='#' class='set' onclick='delRow(this);'>删 除</a>";
 		List<Role> geRmsRoles = page.getContent();
 		for (Role geRmsRole : geRmsRoles) {
-			geRmsRole.setFlag(button);
+			if(!geRmsRole.getComCode().equals(comCode)){
+				geRmsRole.setFlag("<a href='#' class='set' onclick='openUpdateWindow(this);'>修 改</a><a href='#'  class='set dis'   >删 除</a>"); 
+			}
+			geRmsRole.setFlag("<a href='#' class='set' onclick='openUpdateWindow(this);'>修 改</a><a href='#' class='set' onclick='delRow(this);'>删 除</a>");
 		} 
 		ga.setPage(page);
 		ga.setIdField("roleID");
@@ -84,7 +87,6 @@ public class RoleController {
 		// 根据机构代码查询可见功能
 		List<Task> comsTasks = roleService.findTaskByComCode(comCode);
 		// 构建树对象
-		roleService.deleteRole(roleId, comCode);
 		Map<String, Task> filter = new HashMap<String, Task>();
 		List<Task> topList = new ArrayList<Task>();
 		for (Task task : comsTasks) {
@@ -148,22 +150,22 @@ public class RoleController {
 	}
 	
 	
-	@Post("add/{name}/{des}/{roleType}/{taskId}")
-	public Reply addRole(@Param("name")String name,@Param("des") String des,@Param("roleType") String roleType,@Param("taskId") String taskid, Invocation inv){
-		Employe user = (Employe) inv.getRequest().getSession().getAttribute("user");
-		String comCode = user.getCompany().getComCode();
+	@Post("add/{taskId}")
+	public Reply addRole(Role role,@Param("taskId") String taskid, Invocation inv){
+		User user = (User) inv.getRequest().getSession().getAttribute("user");
+		String comCode = user.getLoginComCode();
 		taskid=taskid.substring(0, taskid.length()-1);
-		roleService.addRole(comCode, user.getUserCode(), name, des, roleType, Arrays.asList(taskid.split(",")));
+		roleService.addRole(comCode, user.getUserCode(), role.getName(), role.getDes(), role.getFlag(), Arrays.asList(taskid.split(",")));
 		return null;
 	}
 	
-	@Post("update/{roleId}/{name}/{des}/{roleType}/{taskId}")
-	public Reply updateRole(@Param("roleId") String roleId,@Param("name")String name,@Param("des") String des,@Param("roleType") String roleType,@Param("taskId") String taskid, Invocation inv){
-		Employe user = (Employe) inv.getRequest().getSession().getAttribute("user");
-		String comCode = user.getCompany().getComCode();
+	@Post("update/{taskId}")
+	public Reply updateRole(Role role,@Param("taskId") String taskid, Invocation inv){
+		User user = (User) inv.getRequest().getSession().getAttribute("user");
+		String comCode =  user.getLoginComCode();
 		taskid=taskid.substring(0, taskid.length()-1);
-		roleService.updateRole(roleId, comCode,user.getUserCode(), name, des, roleType, Arrays.asList(taskid.split(",")));
-		return null;
+		boolean data=roleService.updateRole(role.getRoleID(), comCode,user.getUserCode(), role.getName(), role.getDes(),  role.getFlag(), Arrays.asList(taskid.split(",")));
+		return Replys.with(data);
 	}
 
 	@Post("findDesigNateComTree")
@@ -191,28 +193,27 @@ public class RoleController {
 //		User user=ShiroLoginUser.getLoginUser();
 		Company company=companyService.findCompanyByComCode(comCode);
 		Pageable pageable = new PageRequest(pageNo - 1, rowNum);
-		Gridable<Role> ga = new Gridable<Role>(null);
+		Gridable<RoleDesignateInfo> ga = new Gridable<RoleDesignateInfo>(null);
 		//查询机构下所有可见的角色
 		List<String> roleAttribute = new ArrayList<String>();
 		Page<RoleDesignateInfo> superComRolePage = roleService.findRoleDesignate(company.getUpperComCode(), comCode, pageable);
-//		Page<Role> subComRolePage = roleService.findRole(comCode, null, pageable);
-//		List<Role> supersRoles = superComRolePage.getContent();
-//		List<Role> subsRoles = subComRolePage.getContent();
-//		for (Role supersRole : supersRoles) {
-//			for (Role subsRole : subsRoles) {
-//				if(supersRole.getRoleID().toString().equals(subsRole.getRoleID().toString())){
-//					supersRole.setChecked("true");
-//					supersRole.setFlag(subsRole.getr)
-//					break;
-//				}
-//			}
-//		}
+		Page<Role> subComRolePage = roleService.findRole(comCode, null, pageable);
+		List<RoleDesignateInfo> supersRoles = superComRolePage.getContent();
+		List<Role> subsRoles = subComRolePage.getContent();
+		for (RoleDesignateInfo roleDesignateInfo : supersRoles) {
+			for (Role subsRole : subsRoles) {
+				if(roleDesignateInfo.getRoleId().toString().equals(subsRole.getRoleID().toString())){
+					roleDesignateInfo.setChecked("true");
+					break;
+				}
+			}
+		}
 		ga.setPage(superComRolePage);
 		ga.setIdField("roleId");
 		roleAttribute.add("roleName");
 		roleAttribute.add("operateTime");
 		roleAttribute.add("operateUser");
-		roleAttribute.add("type");
+		roleAttribute.add("checked");
 		ga.setCellListStringField(roleAttribute);
 		inv.getResponse().setContentType("text/html;charset=UTF-8");
 		Render render = (GridRender) UIUtil.with(ga).as(UIType.Json);
@@ -220,7 +221,24 @@ public class RoleController {
 		return null;
 	}
 	
+	@Post({"designateRole/{comCode}/{roleid}","designateRole/{comCode}"})
+	public Reply designateRole(@Param("roleid") String roleid,@Param("comCode") String comCode){
+		User user=ShiroLoginUser.getLoginUser();
+		if(roleid!=null&&!roleid.equals("")){
+			String[] roleds=roleid.substring(0,roleid.length()-1).split(",");
+			roleService.designateRole(Arrays.asList(roleds), comCode, user.getUserCode());
+		}else{
+			roleService.designateRole(new ArrayList<String>(), comCode, user.getUserCode());
+		}
+		return null;
+	}
 	
+	@Post("delete/{roleid}")
+	public Reply deleteRole(@Param("roleid") String roleid){
+		User user=ShiroLoginUser.getLoginUser();
+		boolean isdelete=roleService.deleteRole(roleid, user.getLoginComCode());
+		return Replys.with(isdelete);
+	}
 	//-----------------------------------------------------------//
 	/**
 	 * 构建功能树 topTasks父节点 filter所有节点

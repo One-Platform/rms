@@ -18,6 +18,7 @@ import com.sinosoft.one.mvc.web.instruction.reply.transport.Json;
 import com.sinosoft.one.rms.model.Task;
 import com.sinosoft.one.rms.model.TaskAuth;
 import com.sinosoft.one.rms.service.TaskService;
+import com.sinosoft.one.rms.utils.ProceesTaskTreebble;
 import com.sinosoft.one.uiutil.NodeEntity;
 import com.sinosoft.one.uiutil.TreeRender;
 import com.sinosoft.one.uiutil.Treeable;
@@ -43,7 +44,7 @@ public class TaskMenuController {
 				topList.add(task);
 			}
 		}
-		Treeable<NodeEntity> treeable = taskService.creatTaskTreeAble(topList,filter);
+		Treeable<NodeEntity> treeable =ProceesTaskTreebble.creatTaskTreeAble(topList,filter);
 		inv.getResponse().setContentType("text/html;charset=UTF-8");
 		TreeRender render = (TreeRender) UIUtil.with(treeable).as(UIType.Json);
 		System.out.println(render.getResultForTest());
@@ -61,7 +62,7 @@ public class TaskMenuController {
 	}
 	
 	//新建或修改功能，并保存
-	@Post("saveTask/{parentID}")
+	@Post({"saveTask/{parentID}","saveTask"})
 	public Reply save(Task task,@Param("parentID")String parentId, Invocation inv) {
 
 		TaskAuth taskAuth = new TaskAuth();

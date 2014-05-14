@@ -24,12 +24,15 @@ import com.sinosoft.one.rms.model.Employe;
 import com.sinosoft.one.rms.model.Group;
 import com.sinosoft.one.rms.model.Role;
 import com.sinosoft.one.rms.model.Task;
+import com.sinosoft.one.rms.model.UserGroup;
+import com.sinosoft.one.rms.model.UserPower;
 import com.sinosoft.one.rms.service.CompanyService;
 import com.sinosoft.one.rms.service.EmployeeService;
 import com.sinosoft.one.rms.service.GroupService;
 import com.sinosoft.one.rms.service.RoleService;
-import com.sinosoft.one.rms.service.StaffingService;
 import com.sinosoft.one.rms.service.TaskService;
+import com.sinosoft.one.rms.service.UserPowerService;
+import com.sinosoft.one.rms.utils.ProceesTaskTreebble;
 import com.sinosoft.one.uiutil.GridRender;
 import com.sinosoft.one.uiutil.Gridable;
 import com.sinosoft.one.uiutil.NodeEntity;
@@ -43,7 +46,7 @@ import com.sinosoft.one.uiutil.UIUtil;
 public class StaffingController {
 	
 	@Autowired
-	private StaffingService staffingService;
+	private UserPowerService staffingService;
 	@Autowired
 	private EmployeeService employeeService;
 	@Autowired
@@ -133,7 +136,7 @@ public class StaffingController {
 	//查询当前机构的用户组，并返回页面
 	@Get("group/{comCode}")
 	public Reply groupList(@Param("comCode")String comCode,Invocation inv){
-		List<Group> groupList = groupService.findGroupByComCode(comCode);
+		List<Group> groupList = groupService.findGroups(comCode);
 		return Replys.with(groupList).as(Json.class);
 	}
 	
@@ -145,14 +148,16 @@ public class StaffingController {
 	}
 	
 	//查询当前机构，当前用户组，当前角色的根权限
-	@Get("taskList/{comCode}/{roleIdStr}")
+	@Get({"taskList/{comCode}/{roleIdStr}","taskList/{comCode}"})
 	public Reply taskList(@Param("comCode")String comCode, @Param("roleIdStr")String roleIdStr,Invocation  inv){
-		String[] roleIds = roleIdStr.split(",");
 		List<String> roleIDs = new ArrayList<String>();
-		for(String roleId : roleIds){
-			roleIDs.add(roleId);
+		if (roleIdStr != null && !roleIdStr.equals("")) {
+			String[] roleIds = roleIdStr.split(",");
+
+			for (String roleId : roleIds) {
+				roleIDs.add(roleId);
+			}
 		}
-		
 		List<Task> taskList = taskService.findTaskByRoleIds(roleIDs, comCode);
 		
 		return Replys.with(taskList).as(Json.class);
@@ -163,14 +168,43 @@ public class StaffingController {
 	public Reply taskChildren(@Param("comCode")String comCode,@Param("roleIdStr")String roleIdStr,@Param("taskId")String taskId,@Param("userCode")String userCode,Invocation  inv) throws Exception{
 		
 		Treeable<NodeEntity> treeable = null;
-		if(userCode.toString().equals("null")){
-			
-			treeable = taskService.getTreeable(roleIdStr, comCode, taskId);
-		}else{
+//		if(userCode.toString().equals("null")){
+//			
+//			treeable = taskService.getTreeable(roleIdStr, comCode, taskId);
+//		}else{
 			
 			//检查子权限在权限除外表中是否存在
-			treeable = taskService.getTreeable(roleIdStr, comCode, userCode, taskId);
-		}
+//			treeable = taskService.getTreeable(roleIdStr, comCode, userCode, taskId);
+			//获取这个机构下的角色具有的功能的树长度（所有节点）
+			List<Task> temtasks=taskService.getTaskChildren(roleIdStr, comCode, taskId);
+			List<String> tasks=new ArrayList<String>();
+			for (Task task : temtasks) {
+				tasks.add(task.getTaskID());
+			}
+			List<Task> topTasks = new ArrayList<Task>();
+			//除去除外权限，即是具有的权限
+			List<Task>excTasks=taskService.getexcpowerTask(userCode, comCode);
+			//和除外权限过滤
+			List<String> taskIdList=new ArrayList<String>();
+			
+			for (String taskid : tasks) {
+				int i=0;
+				for (Task excTask : excTasks) {
+					if(excTask.getTaskID().toString().equals(taskid)){
+						i++;
+						break;
+					}
+				}
+				if(i==0){
+					taskIdList.add(taskid);
+				}
+			}
+			Task topTask= taskService.findTaskByTaskId(taskId);
+			topTask.setFlag("0");
+			topTasks.add(topTask);
+			
+			treeable =ProceesTaskTreebble.creatTaskTreeAble(topTasks, taskIdList, tasks);
+//		}
 		
 		inv.getResponse().setContentType("text/html;charset=UTF-8");
 		Render render = (TreeRender) UIUtil.with(treeable).as(UIType.Json);
@@ -207,10 +241,27 @@ public class StaffingController {
 		return null;
 	}
 	
-	//查询当前机构的用户组，并返回页面
+	//查询用户在当前引入机构的用户组，并返回页面
 	@Get("groupList/{comCode}/{userCode}")
 	public Reply group(@Param("comCode")String comCode,@Param("userCode")String userCode,Invocation inv){
-		List<Group> groupList = groupService.findGroupByComCode(comCode,userCode);
+		List<Group> groupList = groupService.findGroups( comCode);
+		UserPower userPower=staffingService.findUserPowerByUserCode(userCode, comCode);
+		
+		if(!userPower.getUserGroups().isEmpty()){
+			List<UserGroup> userGroups = userPower.getUserGroups();
+			List<String> checkGroupIds = new ArrayList<String>();
+			for(UserGroup userGroup : userGroups){
+				checkGroupIds.add(userGroup.getGroup().getGroupID());
+			}
+
+			for(Group group : groupList){
+				if(checkGroupIds.contains(group.getGroupID().toString())){
+					group.setFlag("1");
+				}else{
+					group.setFlag("0");
+				}
+			}
+		}
 		return Replys.with(groupList).as(Json.class);
 	}
 	
@@ -237,21 +288,39 @@ public class StaffingController {
 	}
 	
 	//查询出没有赋参数的数据规则
-	@Get("rules/{comCode}/{userCode}")
+	@Post("rules/{comCode}/{userCode}")
 	public Reply rules(@Param("comCode")String comCode,@Param("userCode")String userCode,Invocation inv) throws Exception {
-		
-		List<DataRule> rules = staffingService.getRules(comCode, userCode);
-		
-		return Replys.with(rules).as(Json.class);
+		List<DataRule> delList = new ArrayList<DataRule>();
+		List<DataRule> alldataRules = staffingService.findAllDataRule();
+		List<DataRule> userdataRules =staffingService.getUserDataRule(comCode, userCode);
+		for (DataRule alldataRule : alldataRules) {
+			for (DataRule userdataRule : userdataRules) {
+				if(alldataRule.getDataRuleID().toString().equals(userdataRule.getDataRuleID().toString())){
+					delList.add(alldataRule);
+					break;
+				}
+			}
+		}
+		alldataRules.removeAll(delList);
+		return Replys.with(alldataRules).as(Json.class);
 	}
 	
 	//查询出有参数的数据规则
 	@Get("ruleParam/{comCode}/{userCode}")
 	public Reply ruleParam(@Param("comCode")String comCode,@Param("userCode")String userCode,Invocation inv) throws Exception {
 		
-		List<DataRule> rules = staffingService.getRuleParam(comCode, userCode);
-		
-		return Replys.with(rules).as(Json.class);
+		List<DataRule> delList = new ArrayList<DataRule>();
+		List<DataRule> alldataRules = staffingService.findAllDataRule();
+		List<DataRule> userdataRules =staffingService.getUserDataRule(comCode, userCode);
+		for (DataRule alldataRule : alldataRules) {
+			for (DataRule userdataRule : userdataRules) {
+				if(alldataRule.getDataRuleID().toString().equals(userdataRule.getDataRuleID().toString())){
+					delList.add(alldataRule);
+					break;
+				}
+			}
+		}
+		return Replys.with(delList).as(Json.class);
 	}
 	
 	//查询数据规则的参数
@@ -264,12 +333,11 @@ public class StaffingController {
 	}
 
 	//保存数据设置
-	@Post("saveBusPower/{comCode}/{userCode}/{ruleIdStr}/{paramStr}")
-	public Reply save(@Param("comCode")String comCode,@Param("userCode")String userCode,@Param("ruleIdStr")String ruleIdStr,@Param("paramStr")String paramStr,Invocation inv){
+	@Post("saveBusPower/{comCode}/{userCode}/{tdata}")
+	public Reply save(@Param("comCode")String comCode,@Param("userCode")String userCode,@Param("tdata")String tdata,Invocation inv){
+		System.out.println(tdata);
+//		String result = staffingService.saveBusPower(comCode, userCode, paramStr);
 		
-		String result = staffingService.saveBusPower(comCode, userCode, ruleIdStr, paramStr);
-		
-		System.out.println(result);
 		return Replys.with("success");
 	}
 

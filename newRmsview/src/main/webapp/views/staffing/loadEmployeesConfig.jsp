@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>权限管理-功能菜单管理</title>
 <link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.base.css" />
-<link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.tree.css" />
+<link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.tree2.css" />
 <link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.grid.css" />
 <link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.window.css" />
 <link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.message.css" />
@@ -46,7 +46,8 @@ function openWindow(obj){
 	$("body").window({
 		"id":"window1", 
 		"url":"${ctx}/staffing/updatePower/"+userName+"/"+userCode,
-		"title":"姓名："+ userName+"  编号："+userCode, 
+		"title":"姓名："+ userName+"  编号："+userCode +"的权限信息", 
+		"hasIFrame":true,
 		"content":"",
 		"width":1080,
 		"height":450, 
@@ -56,8 +57,10 @@ function openWindow(obj){
 			"btClass": "def_btn",
 			"value": "保 存",
 			"btFun": function() {
-				$obj = $("#window1").find(".set_info");
-				comCode = $obj.attr("id");
+				$obj = $(document.getElementById('window1_iframe').contentWindow.document);
+				$company = $obj.find(".set_info");
+				comCode = $company.attr("id");
+				alert(comCode);
 				var groupIdStr = "";
 				$obj.find(".set_box").children().each(function(){
 					var id = $(this).attr("id");
@@ -143,6 +146,7 @@ function openQX(obj) {
 						
 					},
 					error : function(){
+						alert(231);
 						alert("操作失败！");
 					}
 				});
@@ -181,19 +185,32 @@ function openSJ(obj) {
 			"btFun": function() {
 				$obj = $(document.getElementById('window3_iframe').contentWindow.document);
 				var comCode = $obj.find("#comCode").val();
-				var ruleIdStr = ",";
-				var paramStr = ",";
-				$busPower = $obj.find(".code_box").find("input");
+				var ruleIdStr = "";
+				var paramStr = "";
+				var tablename="";
+				var column = "";
+				var tdata="";
+				/* $busPower = $obj.find(".code_box").find("input");
 				$busPower.each(function(){
 					var id = $(this).attr("id");
+					alert(id);
 					ruleIdStr = id.substr(3)+ "," + ruleIdStr;
 					var param = $(this).val();
 					paramStr = param + "," + paramStr;
+				}); */
+				$busPower = $obj.find(".code_box").find("table");
+				$busPower.each(function(){
+					var id = $(this).attr("id");
+					 id=id.split("_")[1];
+					 alert(id);
+					 paramStr=  $(this).find("#p_"+id).val();
+					 tablename=  $(this).find("#t_"+id).val();
+					 column=  $(this).find("#c_"+id).val();
+					 tdata=tdata+id+":"+paramStr+"。"+tablename+"。"+column+"|"
 				});
-
-				if(ruleIdStr.length > 1 && paramStr.length > 1){
+				alert(tdata);
 					$.ajax({
-						url : "${ctx}/staffing/saveBusPower/"+comCode+"/"+userCode+"/"+ruleIdStr+"/"+paramStr,
+						url : "${ctx}/staffing/saveBusPower/"+comCode+"/"+userCode+"/"+tdata,
 						type : "post",
 						dataType : "html",
 						success : function(data){
@@ -209,9 +226,6 @@ function openSJ(obj) {
 							alert("保存失败！！");
 						}
 					});
-				}else{
-					alert("请选择数据规则！");
-				}
 			}
 			}, {
 			"id": "btTwo",

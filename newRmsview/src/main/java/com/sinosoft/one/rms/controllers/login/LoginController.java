@@ -3,6 +3,8 @@
  */
 package com.sinosoft.one.rms.controllers.login;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -23,6 +25,7 @@ import com.sinosoft.one.rms.model.Company;
 import com.sinosoft.one.rms.model.Employe;
 import com.sinosoft.one.rms.service.CompanyService;
 import com.sinosoft.one.rms.service.EmployeeService;
+import com.sinosoft.one.rms.service.UserPowerService;
 
 @Path
 public class LoginController {
@@ -31,7 +34,8 @@ public class LoginController {
 	private CompanyService companyService;
 	@Autowired
 	private EmployeeService employeeService;
-	
+	@Autowired
+	private UserPowerService userPowerService;
 	
 	@Get
 	public String login(Invocation inv){
@@ -73,9 +77,8 @@ public class LoginController {
 	@Post("company/{userCode}")
 	public Reply company(@Param("userCode")String userCode, Invocation inv) throws Exception {
 
-		Company com = employeeService.findComByUserCode(userCode);
-		System.out.println(com.getComCode());
-		return Replys.with(com).as(Json.class);
+		List<Company> companies = userPowerService.findPowerCompanyByuserCode(userCode);
+		return Replys.with(companies).as(Json.class);
 	}
 
 

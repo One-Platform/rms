@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>权限管理-功能菜单管理</title>
 <link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.base.css" />
-<link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.tree.css" />
+<link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.tree2.css" />
 <link type="text/css" rel="stylesheet" href="${ctx}/css/sinosoft.message.css" />
 <script type="text/javascript" src="${ctx}/js/jquery-1.7.1.js"></script>
 <script type="text/javascript" src="${ctx}/js/sinosoft.tree.js"></script>
@@ -19,8 +19,8 @@
 $(function taskTree(){
 	$("#treeOne").jstree({
 		"themes" : {
-			"dots" : false,
-			"icons" : false
+			"theme" : "default",
+			"dots" : false
 		},
 		"json_data":{
 			"ajax":{
@@ -68,7 +68,7 @@ $(function taskTree(){
 	$("#treeTow").jstree({ 
 		"themes" : {
 			"dots" : false,
-			"icons" : false
+			"icons" : true
 		},
 		"json_data":{
 			"ajax":{
@@ -122,7 +122,6 @@ function evevtCheck(){
 		$("#centerInfo").find("input:not(#saveBtn),select,textarea").removeAttr("disabled");
 	}else{
 		var parentId = $(".parentID").val();
-		
 		$.ajax({
 			type:"post",
 			url:"${ctx}/taskmenu/saveTask/"+parentId,
